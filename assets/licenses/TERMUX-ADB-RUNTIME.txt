@@ -1,0 +1,107 @@
+PlanYourTV 安装器 — 内置 adb 运行时来源、修改和许可证
+版本 1.1.2 · 运行时固定日期 2026-11-11
+
+本安装器内置的 adb 客户端/服务器及其共享库来自 Termux 官方软件仓库的
+android-tools 包，不是从参考 APK 提取的，也不是本安装器或 PlanYourTV 自行构建的。
+运行时的固定版本、下载地址、SHA-256 和逐文件清单保存在源码仓库的
+tools/adb-runtime.lock，可由 tools/sync-adb-runtime.sh 重新下载和核验。
+
+1. 来源包
+
+仓库索引：
+  https://packages.termux.dev/apt/termux-main/dists/stable/main/binary-aarch64/Packages.gz
+  （索引会滚动更新；以下 .deb 的 URL 和 SHA-256 才是固定依据）
+
+  包名                 版本              .deb SHA-256
+  android-tools        37.0.0p1-3        534e90d338bd432c06677cb402d0e9ed98a82a74de4bf5f90e643f15d8fc4274
+  libc++               30                53d0b84a7ba7459024257cb94d5b136fe13ef858567f65a8064b35950799f2ca
+  abseil-cpp           20260817.0        b698963bb7096494ad928ce89cd869a53e6adf0b05f5f407b40fda9c85c6e2b0
+  brotli               1.2.1             4fba29438b2b44f8470d52173b4548e938542dc2fc632f8699be5a284cbb9485
+  fmt                  1:12.2.0          4a2cb43ab167b32daf0d7978f21c5391d17bce47dae6aa2a8b3a8f958e663ce7
+  liblz4               1.11.1            314d1a014f74f667122afd5e6b5d7541fbb60fab9e28086382568f8140b523ed
+  libprotobuf          2:36.2-1          daa3b9169e094644ba95c35d40a5cc283473144decc7dae8396c49cc51440815
+  zlib                 1.4               e3027565ae50bcd8ba5113c988b589754ae192c9cc3e6afbe3e4ed7c06b2598e
+  zstd                 1.5.7-1           e1b4a5113648da8de189620ba1fce74c48b2d0833d9043391b9a1c91fb606fd3
+
+Termux 包的元数据还声明了 pcre2 10.49 和 liblzma 5.8.4；它们不是本安装器
+实际打包的 adb 运行时依赖（运行时不包含 libpcre2* 或 liblzma*），因此不随 APK 分发。
+它们的 .deb 元数据仍记录在 tools/adb-runtime.lock 中。
+
+2. 实际打包的运行时
+
+arm64-v8a，共 59 个文件，11,988,576 字节（未压缩）。入口文件：
+  libadb.so
+  SHA-256 0f041d3845b9d0a88c36a0520331ccd7191e1ecfdf09beff1147d7220e3d55a5
+  Source:  android-tools 37.0.0p1-3 中的 bin/adb
+  Version: Android Debug Bridge 1.0.41, 37.0.0p1-android-tools
+
+其余 58 个文件是 adb 实际链接到的共享库闭包，来自上述 abseil-cpp、brotli、
+fmt、libc++、liblz4、libprotobuf、zlib、zstd 包。未使用的库不打包。
+每个文件的来源包、源文件 SHA-256、打包后 SHA-256 和补丁记录都在
+tools/adb-runtime.lock 的 outputs 数组中。
+
+3. 为 Android APK 打包所做的修改
+
+Android 的 APK 原生库目录只接受 lib*.so 文件名，而官方 zlib/zstd 共享库使用了
+带 soname 版本的文件名。安装器只做了以下不改变程序逻辑的打包适配：
+
+  - 将 libz.so.1 的 DT_NEEDED 字符串改为 libz.so（libadb.so 和 libprotobuf.so）；
+  - 将 libzstd.so.1 的 DT_NEEDED 字符串改为 libzstd.so（libadb.so）；
+  - 将 zlib 的 libz.so.1.4 打包为 libz.so，将 zstd 的 libzstd.so.1.5.7 打包为 libzstd.so；
+  - 将 adb 可执行文件打包为 libadb.so，以便 Android 从 APK 的原生库目录解压并执行。
+
+DT_NEEDED 字符串是在原位置缩短并用 NUL 填充的，文件字节偏移和其他内容不变。
+除此之外没有修改 adb 或共享库的代码。运行时通过应用私有的 LD_LIBRARY_PATH 加载
+同目录下的库；二进制中的 Termux RUNPATH 没有被使用。
+
+4. 许可证和上游项目
+
+以下许可证全文随 APK 打包在 assets/licenses/runtime/：
+
+  ANDROID-TOOLS-Apache-2.0.txt
+  ANDROID-TOOLS-BSD-3-Clause.txt
+  ABSEIL-Apache-2.0.txt
+  LLVM-Apache-2.0-with-LLVM-exception.txt
+  BROTLI-MIT.txt
+  FMT-MIT.txt
+  LZ4-BSD-2-Clause.txt
+  PROTOBUF-BSD-3-Clause.txt
+  ZLIB.txt
+  ZSTD-BSD-3-Clause.txt
+
+组件与许可证对应关系：
+
+  adb / android-tools   Apache License 2.0；包内还附带一份 BSD 3-Clause 文本
+  Abseil                Apache License 2.0
+  libc++                Apache License 2.0 with LLVM exception
+  Brotli                MIT License
+  {fmt}                 MIT License
+  LZ4 library           BSD 2-Clause License
+  Protocol Buffers      BSD 3-Clause License
+  zlib                  zlib License
+  Zstandard             BSD 3-Clause License
+
+上游项目主页：
+  https://developer.android.com/  (Android platform tools)
+  https://abseil.io/
+  https://libcxx.llvm.org/
+  https://github.com/google/brotli
+  https://fmt.dev/
+  https://lz4.github.io/lz4/
+  https://github.com/protocolbuffers/protobuf
+  https://www.zlib.net/
+  https://github.com/facebook/zstd
+
+本安装器不是 Termux、Google、AOSP 或上述任何上游项目的官方应用，与它们没有
+隶属、赞助或背书关系。Termux、Android 和其他名称是其各自权利人的商标。
+
+5. 复现和校验
+
+在源码仓库运行：
+
+  bash tools/sync-adb-runtime.sh          # 下载固定版本并替换 jniLibs
+  bash tools/sync-adb-runtime.sh --check  # 只校验现有 jniLibs
+
+脚本会校验每个 .deb 的 URL、大小和 SHA-256，校验源文件哈希和最终文件哈希，
+用 readelf 检查每个 NEEDED 依赖都能在同目录或系统库中找到；任一失败都会停止，
+不会回退到参考 APK 或其他 adb 构建。

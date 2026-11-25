@@ -1,0 +1,13 @@
+[extend]
+useDefault = true
+
+# Public client identifiers embedded in StudyOnTV's own Android updater.
+# They are not user secrets, account tokens, or signing material. The app reads
+# the same public update endpoint that StudyOnTV itself uses.
+[[allowlists]]
+description = "StudyOnTV public Pgyer update endpoint identifiers"
+paths = ['''src/com/toolstore/installer/ApkResolver.java''']
+regexes = [
+  '''5c78c116f305ded2cd7f34edb69a70ec''',
+  '''305092bc73c180b55c26012a94809131''',
+]

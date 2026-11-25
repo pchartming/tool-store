@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="18dp"
+    android:paddingTop="8dp"
+    android:paddingRight="18dp"
+    android:paddingBottom="6dp">
+
+    <com.toolstore.installer.LogoView
+        android:id="@+id/brandLogo"
+        android:layout_width="42dp"
+        android:layout_height="42dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/brandTitle"
+            style="@style/Text.AppTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="工具市场" />
+
+        <TextView
+            android:id="@+id/brandSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Tool Store · 精选电视工具"
+            android:textColor="@color/muted"
+            android:textSize="10.5sp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/settingsButton"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:background="@drawable/bg_icon_button"
+        android:clickable="true"
+        android:contentDescription="设置"
+        android:focusable="true">
+
+        <com.toolstore.installer.LineIconView
+            android:id="@+id/settingsIcon"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_gravity="center" />
+    </FrameLayout>
+</LinearLayout>
