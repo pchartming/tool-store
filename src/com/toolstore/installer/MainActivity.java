@@ -324,20 +324,14 @@ public final class MainActivity extends Activity {
             addGroup(marketSections, "搜索结果",
                     "与“" + marketQuery + "”匹配的工具", visible);
         } else if ("tool".equals(marketFilter)) {
-            addGroup(marketSections, "学习与专注",
+            addGroup(marketSections, "全部工具",
                     "答题换电视时间，不改默认桌面", visible);
+        } else if ("launcher".equals(marketFilter)) {
+            addGroup(marketSections, "全部桌面",
+                    "电视桌面，按固定目录展示", visible);
         } else {
-            addGroupByIds(marketSections, "为你推荐",
-                    "儿童桌面、去广告桌面与答题工具",
-                    visible, new String[]{
-                            Catalog.PLAN_YOUR_TV, Catalog.AERIAL, Catalog.STUDY_ON_TV
-                    });
-            addGroupByIds(marketSections, "更多选择",
-                    "安静、轻量与独立包名分支",
-                    visible, new String[]{Catalog.QUIET_TV, Catalog.HALO_TV});
-            addGroupByIds(marketSections, "进阶安装",
-                    "CleanYourTV 官方脚本或手机版 App",
-                    visible, new String[]{Catalog.CLEAN_YOUR_TV});
+            addGroup(marketSections, "全部应用",
+                    "电视桌面与工具，按固定目录展示", visible);
         }
     }
 
@@ -412,20 +406,6 @@ public final class MainActivity extends Activity {
         for (UiData.App app : apps) {
             parent.addView(buildAppCard(app));
         }
-    }
-
-    private void addGroupByIds(LinearLayout parent, String title, String subtitle,
-                               List<UiData.App> visible, String[] ids) {
-        List<UiData.App> group = new ArrayList<UiData.App>();
-        for (String id : ids) {
-            for (UiData.App app : visible) {
-                if (app.id().equals(id)) {
-                    group.add(app);
-                    break;
-                }
-            }
-        }
-        addGroup(parent, title, subtitle, group);
     }
 
     private View buildEmptyMarket() {

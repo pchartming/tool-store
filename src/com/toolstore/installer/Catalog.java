@@ -78,16 +78,6 @@ final class Catalog {
     static {
         Map<String, App> apps = new LinkedHashMap<String, App>();
 
-        apps.put(PLAN_YOUR_TV, new App(
-                PLAN_YOUR_TV, "PlanYourTV", "launcher", "PlanYourTV 官网",
-                "com.planyourtv.tv",
-                new Variant("standard", "标准版", "com.planyourtv.tv",
-                        "com.planyourtv.tv/app.orchard.tv.MainActivity",
-                        "https://planyourtv.me/download/", 80L * 1024L * 1024L),
-                new Variant("guard", "Guard", "com.planyourtv.tv",
-                        "com.planyourtv.tv/app.orchard.tv.MainActivity",
-                        "https://planyourtv.me/download/", 80L * 1024L * 1024L)));
-
         apps.put(AERIAL, new App(
                 AERIAL, "Aerial", "launcher", "官方站点 / GitHub",
                 "app.orchard.tv",
@@ -100,6 +90,16 @@ final class Catalog {
                 new Variant("lite", "Lite", "app.orchard.tv.lite",
                         "app.orchard.tv.lite/app.orchard.tv.lite.HomeActivity",
                         "https://aerial.qust.me/download/", 40L * 1024L * 1024L)));
+
+        apps.put(PLAN_YOUR_TV, new App(
+                PLAN_YOUR_TV, "PlanYourTV", "launcher", "PlanYourTV 官网",
+                "com.planyourtv.tv",
+                new Variant("standard", "标准版", "com.planyourtv.tv",
+                        "com.planyourtv.tv/app.orchard.tv.MainActivity",
+                        "https://planyourtv.me/download/", 80L * 1024L * 1024L),
+                new Variant("guard", "Guard", "com.planyourtv.tv",
+                        "com.planyourtv.tv/app.orchard.tv.MainActivity",
+                        "https://planyourtv.me/download/", 80L * 1024L * 1024L)));
 
         apps.put(QUIET_TV, new App(
                 QUIET_TV, "Quiet TV", "launcher", "官方索引 / 官方更新镜像 / GitHub",

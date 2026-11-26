@@ -128,21 +128,6 @@ final class UiData {
     static {
         Map<String, App> map = new LinkedHashMap<String, App>();
 
-        map.put(Catalog.PLAN_YOUR_TV, new App(
-                Catalog.app(Catalog.PLAN_YOUR_TV),
-                "儿童桌面 · 答题 · 时间管理",
-                "专业的儿童电视桌面，把观看时间变成答题奖励，家长规则一目了然。",
-                "P", Color.parseColor("#2F6BFF"),
-                new String[]{"儿童桌面", "答题系统", "时间管理"},
-                "官方站点", "Android 5.0+", "开源 · 以官方仓库为准",
-                "安装后按电视端引导设置家长规则；不会停用系统桌面。", TONE_INFO,
-                false, false, false,
-                new Variant[]{
-                        new Variant("standard", "标准版", "大多数电视"),
-                        new Variant("guard", "Guard", "固件拒绝桌面时")
-                },
-                Collections.<Permission>emptyList(), ""));
-
         map.put(Catalog.AERIAL, new App(
                 Catalog.app(Catalog.AERIAL),
                 "去广告 · 保留系统桌面",
@@ -156,6 +141,21 @@ final class UiData {
                         new Variant("standard", "标准版", "大多数电视"),
                         new Variant("guard", "Guard", "接管失败时"),
                         new Variant("lite", "Lite", "Android 4.x 老电视")
+                },
+                Collections.<Permission>emptyList(), ""));
+
+        map.put(Catalog.PLAN_YOUR_TV, new App(
+                Catalog.app(Catalog.PLAN_YOUR_TV),
+                "儿童桌面 · 答题 · 时间管理",
+                "专业的儿童电视桌面，把观看时间变成答题奖励，家长规则一目了然。",
+                "P", Color.parseColor("#2F6BFF"),
+                new String[]{"儿童桌面", "答题系统", "时间管理"},
+                "官方站点", "Android 5.0+", "开源 · 以官方仓库为准",
+                "安装后按电视端引导设置家长规则；不会停用系统桌面。", TONE_INFO,
+                false, false, false,
+                new Variant[]{
+                        new Variant("standard", "标准版", "大多数电视"),
+                        new Variant("guard", "Guard", "固件拒绝桌面时")
                 },
                 Collections.<Permission>emptyList(), ""));
 
